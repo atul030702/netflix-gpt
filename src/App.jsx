@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import Body from "./components/Body.jsx";
 
 function App() {
 
   return (
-    <div className='text-3xl font-bold text-green-700'>Atul</div>
+    <Body />
   );
 }
 
