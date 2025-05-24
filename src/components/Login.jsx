@@ -1,10 +1,30 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 import Header from "./Header.jsx";
 import { loginPageBgImg } from "../utils/image.js";
+import { checkValidData } from "../utils/validate.js";
 
 const Login = () => {
     const [isSignInForm, setIsSignInForm] = useState(true);
+    const [errorMessage, setErrorMessage] = useState(null);
+
+    const name = useRef(null);
+    const email = useRef(null);
+    const password = useRef(null);
+    const confirmPassword = useRef(null);
+
+    const handleButtonClick = () => {
+        //validate the form data        
+        const message = checkValidData(
+            email?.current?.value, 
+            password?.current?.value, 
+            !isSignInForm ? name?.current?.value : null,
+            !isSignInForm ? confirmPassword?.current?.value : null
+        );
+        setErrorMessage(message);
+
+        //Sign in/ Sign up
+    };
 
     const toggleSignInForm = () => {
         setIsSignInForm(!isSignInForm);
@@ -30,33 +50,67 @@ const Login = () => {
                     { isSignInForm ? "Sign In" : "Sign Up" }
                 </h1>
 
-                <form className="text-white flex flex-col gap-10 my-2.5" aria-describedby="login-instructions">
+                <form onSubmit={(e) => e.preventDefault()}
+                    className="text-white flex flex-col gap-5 my-2.5" 
+                    aria-describedby="login-instructions"
+                >
 
                     { !isSignInForm && 
                         <>
                             <label htmlFor="name" className="sr-only">Full Name</label>
-                            <input type="text" placeholder="Full Name" id="name" name="name" required
+                            <input ref={name} type="text" placeholder="Full Name" id="name" name="name" required
                                 className=" p-3 border-1 rounded-sm bg-gray-900"
                             />
                         </>
                     }
 
                     <label htmlFor="email" className="sr-only">Email</label>
-                    <input type="email" placeholder="Email" id="email" name="email" required
+                    <input ref={email} type="email" placeholder="Email" id="email" name="email" required
                         className=" p-3 border-1 rounded-sm bg-gray-900"
                     />
 
                     <label htmlFor="password" className="sr-only">Password</label>
-                    <input type="password" placeholder="Password" id="password" name="password" required
+                    <input ref={password} type="password" placeholder="Password" id="password" name="password" required
                         className=" p-3 border-1 rounded-sm bg-gray-900"
                     />
 
-                    <button aria-label="Sign In" className="p-2 font-bold rounded-sm cursor-pointer bg-[#E50914] hover:bg-red-700 duration-300 ease-in-out">
+                    { !isSignInForm && 
+                        <>
+                            <label htmlFor="password" className="sr-only">Confirm Password</label>
+                            <input ref={confirmPassword} type="password" placeholder="Confirm Password" id="password" name="password" required
+                                className=" p-3 border-1 rounded-sm bg-gray-900"
+                            />
+                        </>
+                    }
+
+                    <p className="text-[#E50914] text-[1rem] font-bold mx-auto">{errorMessage}</p>
+
+                    <button aria-label="Sign In" onClick={handleButtonClick}
+                        className="p-2 font-bold rounded-sm cursor-pointer bg-[#E50914] hover:bg-red-700 duration-300 ease-in-out"
+                    >
                         { isSignInForm ? "Sign In" : "Sign Up" }
                     </button>
 
                     <p onClick={toggleSignInForm} className="cursor-pointer">
-                        { isSignInForm ? "New to Netflix? Sign up now." : "Already registered? Sign in now." }
+                        { isSignInForm ? (
+                            <>
+                                New to Netflix? 
+                                <strong onClick={toggleSignInForm}
+                                    className="cursor-pointer font-bold mx-2.5 hover:underline"
+                                >
+                                    Sign Up now.
+                                </strong>
+                            </>
+                        ) : (
+                            <>
+                                Already registered?
+                                <strong onClick={toggleSignInForm}
+                                    className="cursor-pointer font-bold mx-2.5 hover:underline"
+                                >
+                                    Sign In
+                                </strong>
+                            </>
+                        )}
                     </p>
                 </form>
             </div>
