@@ -1,8 +1,11 @@
 
 import Header from "./Header";
+import useNowPlayingMovies from "../hooks/useMovies.js";
+
 
 const Browse = () => {
-    
+
+    useNowPlayingMovies();
 
     return (
         <div>

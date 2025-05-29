@@ -30,7 +30,6 @@ const Header = () => {
                 navigate("/");
             }
         });
-        unsubscribe();
           
         return () => unsubscribe();
     }, []);
@@ -39,6 +38,7 @@ const Header = () => {
         signOut(auth).then(() => {
             //navigate("/");
         }).catch((error) => {
+            console.error(error?.message);
             navigate("/error");
         });
     };
