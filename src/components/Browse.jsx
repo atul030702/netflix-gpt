@@ -1,21 +1,22 @@
 
 import Header from "./Header";
 import useNowPlayingMovies from "../hooks/useMovies.js";
-
+import MainContainer from "./MainContainer.jsx";
+import SecondaryContainer from "./SecondaryContainer.jsx";
 
 const Browse = () => {
 
     useNowPlayingMovies();
 
     return (
-        <div>
-            <div className="w-full flex items-center justify-center px-5">
-                <Header/>
-                
-                
+        <div className="w-full flex flex-col">
+            <div className="w-full absolute">
+                <Header />
             </div>
 
-            Browse
+            <MainContainer />
+            <SecondaryContainer />
+
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
@@ -9,6 +9,7 @@ import { netflixLogoCdn } from "../utils/image.js";
 import { addUser, removeUser } from "../utils/userSlice.js";
 
 const Header = () => {
+    const [isScrolled, setIsScrolled] = useState(false);
     const navigate = useNavigate();
     const user = useSelector((store) => store.user);
     const dispatch = useDispatch();
@@ -30,9 +31,19 @@ const Header = () => {
                 navigate("/");
             }
         });
+
+        window.addEventListener("scroll", handleScroll);
           
-        return () => unsubscribe();
+        return () => {
+            unsubscribe();
+            window.removeEventListener("scroll", handleScroll);
+        };
+
     }, []);
+
+    function handleScroll() {
+        setIsScrolled(window.scrollY > 10);
+    }
 
     const handleSignOut = () => {
         signOut(auth).then(() => {
@@ -45,8 +56,10 @@ const Header = () => {
 
     return (
 
-        <div className="w-full flex items-center justify-center relative">
-            <div className="w-full flex">
+        <div 
+            className={`w-full flex items-center justify-center relative transition-all duration-300 ${isScrolled ? "bg-black shadow-lg" : "bg-gradient-to-b from-black/80 to-transparent"}`}
+        >
+            <div className="w-full flex pl-20">
                 <img className="w-44"
                     src={netflixLogoCdn} alt="Netflix Logo" 
                     role="Image" draggable="false" loading="lazy"

@@ -99,9 +99,7 @@ const Login = () => {
                 src={loginPageBgImg} alt="Background image" role="background image"
             />
 
-            <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black opacity-75"></div>
-
-            <div className="absolute top-0 left-0 mx-25 my-2">
+            <div className="w-full absolute top-0 left-0">
                 <Header />
             </div>
 
