@@ -1,4 +1,4 @@
-export const URL = `https://api.themoviedb.org/3/movie/now_playing?page=1`;
+export const URL = `https://api.themoviedb.org/3/movie/`;
 
 export const API_Options = {
     method: 'GET',

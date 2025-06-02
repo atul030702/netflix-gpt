@@ -3,17 +3,18 @@ import infoLogo from "../assets/info-logo.svg";
 
 const VideoTitle = ({ title, overview }) => {
     return (
-        <div>
-            <h1>{title}</h1>
-            <p>{overview}</p>
+        <div className="m-5">
+            <h1 className="text-2xl font-bold">{title}</h1>
+            <p className="py-2.5 text-lg w-1/3">{overview}</p>
+
             <div className="flex justify-start items-center gap-2.5">
-                <button className="inline-flex justify-center items-center font-bold">
-                    <img src={playBtnLogo} alt="Play Button Logo" loading="lazy" decoding="async" draggable="false" />
+                <button className="inline-flex justify-center items-center font-bold text-black bg-[#CAC6C4] rounded-sm px-3 py-1 cursor-pointer hover:bg-[#CAC6C4]">
+                    <img className="size-[25px]" src={playBtnLogo} alt="Play Button Logo" loading="lazy" decoding="async" draggable="false" />
                     Play
                 </button>
 
-                <button className="inline-flex justify-center items-center font-bold">
-                    <img src={infoLogo} alt="Info Logo" loading="lazy" decoding="async" draggable="false" />
+                <button className="inline-flex justify-center items-center font-bold text-white bg-[#6D6D6EB3] rounded-sm gap-1.5 px-3 py-1 cursor-pointer bg-opacity-50 hover:bg-[#3D3734]">
+                    <img className="size-[22px]" src={infoLogo} alt="Info Logo" loading="lazy" decoding="async" draggable="false" />
                     More Info
                 </button>
             </div>
