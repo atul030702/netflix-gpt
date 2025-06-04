@@ -9,11 +9,11 @@ const Browse = () => {
     useNowPlayingMovies();
 
     return (
-        <div className="w-full flex flex-col">
-            <div className="w-full absolute">
+        <div className="w-full flex flex-col relative overflow-x-hidden max-w-screen">
+            <div className="w-full fixed top-0 left-0 z-50">
                 <Header />
             </div>
-
+            
             <MainContainer />
             <SecondaryContainer />
 

@@ -2,8 +2,9 @@ import playBtnLogo from "../assets/play-btn-logo.svg";
 import infoLogo from "../assets/info-logo.svg";
 
 const VideoTitle = ({ title, overview }) => {
+
     return (
-        <div className="m-5">
+        <div className="m-5 absolute text-white z-20">
             <h1 className="text-2xl font-bold">{title}</h1>
             <p className="py-2.5 text-lg w-1/3">{overview}</p>
 
