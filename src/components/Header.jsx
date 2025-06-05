@@ -59,7 +59,7 @@ const Header = () => {
         <div 
             className={`w-full flex items-center justify-center relative transition-all duration-300 ${isScrolled ? "bg-black shadow-lg" : "bg-gradient-to-b from-black/80 to-transparent"}`}
         >
-            <div className="w-full flex pl-20">
+            <div className="w-full flex pl-[7.5%]">
                 <img className="w-44"
                     src={netflixLogoCdn} alt="Netflix Logo" 
                     role="Image" draggable="false" loading="lazy"

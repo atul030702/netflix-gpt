@@ -4,9 +4,9 @@ import infoLogo from "../assets/info-logo.svg";
 const VideoTitle = ({ title, overview }) => {
 
     return (
-        <div className="m-5 absolute text-white z-20">
-            <h1 className="text-2xl font-bold">{title}</h1>
-            <p className="py-2.5 text-lg w-1/3">{overview}</p>
+        <div className="text-white max-w-max space-y-4">
+            <h1 className="text-2xl font-bold drop-shadow-md">{title}</h1>
+            <p className="py-2.5 text-lg leading-relaxed drop-shadow-sm">{overview}</p>
 
             <div className="flex justify-start items-center gap-2.5">
                 <button className="inline-flex justify-center items-center font-bold text-black bg-[#CAC6C4] rounded-sm px-3 py-1 cursor-pointer hover:bg-[#CAC6C4]">
