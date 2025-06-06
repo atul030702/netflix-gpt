@@ -10,7 +10,7 @@ const Browse = () => {
 
     return (
         <div className="w-full flex flex-col relative overflow-x-hidden max-w-screen">
-            <div className="w-full fixed top-0 left-0 z-50">
+            <div className="w-full text-white fixed top-0 left-0 z-50">
                 <Header />
             </div>
             
