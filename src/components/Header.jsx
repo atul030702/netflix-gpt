@@ -67,10 +67,13 @@ const Header = () => {
     return (
 
         <div 
-            className={`w-full flex items-center justify-center relative transition-all duration-300 ${isScrolled ? "bg-black shadow-lg" : "bg-gradient-to-b from-black/80 to-transparent"}`}
+            className={`w-full flex items-center justify-between relative transition-all duration-300 
+                px-3 py-2 sm:px-4 sm:py-3 md:px-6 md:py-4 lg:px-8 lg:py-4 xl:px-12 xl:py-5
+                ${isScrolled ? "bg-black shadow-lg" : "bg-gradient-to-b from-black/80 to-transparent"}`
+            }
         >
-            <div className="w-full flex pl-[7.5%]">
-                <img className="w-44"
+            <div className="flex items-center">
+                <img className="w-20 h-auto sm:w-24 md:w-32 lg:w-36 xl:w-44 2xl:w-48"
                     src={netflixLogoCdn} alt="Netflix Logo" 
                     role="Image" draggable="false" loading="lazy"
                 /> 
@@ -78,14 +81,16 @@ const Header = () => {
                  
 
             {user  && (
-                <div className="w-full flex items-center justify-end">
+                <div className="flex items-center">
                     <div onMouseEnter={handleMouseEnter}
                         onMouseLeave={handleMouseLeave}
                         className="relative" 
                         ref={dropdownRef}
                     >
                         <img onClick={() => setShowDropdown(!showDropdown)}
-                            className="w-8 h-8 mr-15 rounded-sm cursor-pointer" 
+                            className="rounded cursor-pointer transition-transform duration-200 hover:scale-110
+                                w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 xl:w-10 xl:h-10
+                            " 
                             src={dropDownImg} 
                             alt="Dropdown Icon" 
                             draggable="false" 
@@ -94,10 +99,33 @@ const Header = () => {
                         />
 
                         {showDropdown && (
-                            <div className={`absolute top-10 right-3 bg-black text-white p-2 rounded-sm font-bold shadow-md flex flex-col transition-all duration-300`}>
-                                <h2 className="whitespace-nowrap p-2">{user?.displayName}</h2>
+                            <div className={`absolute bg-black text-white rounded shadow-lg flex flex-col transition-all duration-300 border border-gray-700
+                                top-8 right-0 p-1 min-w-32
+                                sm:top-9 sm:p-2 sm:min-w-36
+                                md:top-10 md:p-2 md:min-w-40
+                                lg:top-11 lg:p-3 lg:min-w-44
+                                xl:top-12 xl:min-w-48
+                            `}>
+                                <div className="border-b border-gray-600 pb-1 mb-1
+                                    sm:pb-2 sm:mb-2
+                                ">
+                                    <h2 className="whitespace-nowrap font-semibold text-gray-200
+                                        text-xs px-2 py-1
+                                        sm:text-sm sm:px-2 sm:py-1.5
+                                        md:text-base md:px-3 md:py-2
+                                        lg:px-3 lg:py-2
+                                    ">
+                                        {user?.displayName}
+                                    </h2>
+                                </div>
+                                
                                 <button onClick={handleSignOut}
-                                    className="border-t-2 border-t-white p-2 whitespace-nowrap hover:underline cursor-pointer"
+                                    className="text-left whitespace-nowrap hover:bg-gray-800 transition-colors duration-200 rounded cursor-pointer
+                                        text-xs px-2 py-1
+                                        sm:text-sm sm:px-2 sm:py-1.5
+                                        md:text-base md:px-3 md:py-2
+                                        lg:px-3 lg:py-2
+                                    "
                                 >
                                     Sign Out
                                 </button>
