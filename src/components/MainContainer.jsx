@@ -12,7 +12,9 @@ const MainContainer = () => {
     const { original_title, overview, id } = mainMovie;
 
     return (
-        <div className="relative w-full h-screen flex items-start justify-start overflow-hidden overflow-x-hidden">
+        <div className="relative w-full h-screen flex items-start justify-start overflow-hidden overflow-x-hidden
+            "
+        >
 
             <VideoBackground movieId={id} />
 

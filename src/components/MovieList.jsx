@@ -56,7 +56,7 @@ const MovieList = ({title, movies}) => {
                 )}
                 
                 <div ref={scrollRef} 
-                    className="flex justify-start overflow-x-auto whitespace-nowrap no-scrollbar scroll-smooth"
+                    className="flex justify-start overflow-x-auto whitespace-nowrap no-scrollbar"
                 >
                     {movies?.map(movie => 
                         <MovieCard key={movie?.id} posterPath={movie?.poster_path}/>
