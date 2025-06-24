@@ -3,9 +3,16 @@ import { posterCdnUrl } from "../utils/image";
 const MovieCard = ({posterPath}) => {
 
     return (
-        <div className="w-48 mr-4 shrink-0">
+        <div className="shrink-0 cursor-pointer transition-transform duration-300 hover:scale-105
+            w-32 mr-2
+            sm:w-36 sm:mr-2.5
+            md:w-40 md:mr-3
+            lg:w-44 lg:mr-3.5
+            xl:w-48 xl:mr-4
+            2xl:w-52 2xl:mr-4
+        ">
             <img 
-                className="rounded-sm"
+                className="rounded w-full h-auto object-cover shadow-md hover:shadow-lg hover:shadow-black/30 transition-shadow duration-300"
                 src={`${posterCdnUrl}${posterPath}`} 
                 alt="Movie Poster" 
                 draggable="false"

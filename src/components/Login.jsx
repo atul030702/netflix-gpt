@@ -8,7 +8,6 @@ import { checkValidData } from "../utils/validate.js";
 import { auth } from "../utils/firebase.js";
 import { addUser } from "../utils/userSlice.js";
 
-
 const Login = () => {
     const [isSignInForm, setIsSignInForm] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -78,7 +77,6 @@ const Login = () => {
             .then((userCredential) => {
                 // Signed in 
                 const user = userCredential.user;
-                //console.log(user);
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -93,86 +91,92 @@ const Login = () => {
     };
 
     return (
-        <div className="relative w-full h-full">
+        <div className="relative w-full min-h-screen">
 
-            <img className="absolute inset-0 object-cover w-full h-screen"
+            <img className="absolute inset-0 object-cover w-full h-full"
                 src={loginPageBgImg} alt="Background image" role="background image"
             />
 
-            <div className="w-full absolute top-0 left-0">
+            <div className="w-full absolute top-0 left-0 z-10">
                 <Header />
             </div>
 
-            <div aria-labelledby="login-title"
-                className="absolute w-[450px] right-0 left-0 my-30 mx-auto p-10 rounded-sm bg-black/75 flex flex-col"
-            >
-                <h1 className="text-white font-bold text-3xl my-5" role="header">
-                    { isSignInForm ? "Sign In" : "Sign Up" }
-                </h1>
-
-                <form onSubmit={(e) => e.preventDefault()}
-                    className="text-white flex flex-col gap-5 my-2.5" 
-                    aria-describedby="login-instructions"
+            <div className="absolute inset-0 flex items-center justify-center p-4 pt-20 md:pt-4">
+                <div aria-labelledby="login-title"
+                    className="w-full max-w-md mx-auto p-6 sm:p-8 md:p-10 rounded-sm bg-black/75 flex flex-col"
                 >
-
-                    { !isSignInForm && 
-                        <>
-                            <label htmlFor="name" className="sr-only">Full Name</label>
-                            <input ref={name} type="text" placeholder="Full Name" id="name" name="name" required
-                                className=" p-3 border-1 rounded-sm bg-gray-900"
-                            />
-                        </>
-                    }
-
-                    <label htmlFor="email" className="sr-only">Email</label>
-                    <input ref={email} type="email" placeholder="Email" id="email" name="email" required
-                        className=" p-3 border-1 rounded-sm bg-gray-900"
-                    />
-
-                    <label htmlFor="password" className="sr-only">Password</label>
-                    <input ref={password} type="password" placeholder="Password" id="password" name="password" required
-                        className=" p-3 border-1 rounded-sm bg-gray-900"
-                    />
-
-                    { !isSignInForm && 
-                        <>
-                            <label htmlFor="password" className="sr-only">Confirm Password</label>
-                            <input ref={confirmPassword} type="password" placeholder="Confirm Password" id="password" name="password" required
-                                className=" p-3 border-1 rounded-sm bg-gray-900"
-                            />
-                        </>
-                    }
-
-                    <p className="text-[#E50914] text-[1rem] font-bold mx-auto">{errorMessage}</p>
-
-                    <button aria-label="Sign In" onClick={handleButtonClick}
-                        className="p-2 font-bold rounded-sm cursor-pointer bg-[#E50914] hover:bg-red-700 duration-300 ease-in-out"
-                    >
+                    <h1 className="text-white font-bold text-2xl sm:text-3xl my-3 sm:my-5 text-center sm:text-left" role="header">
                         { isSignInForm ? "Sign In" : "Sign Up" }
-                    </button>
+                    </h1>
 
-                    <p onClick={toggleSignInForm} className="cursor-pointer">
-                        { isSignInForm ? (
+                    <form onSubmit={(e) => e.preventDefault()}
+                        className="text-white flex flex-col gap-4 sm:gap-5 my-2" 
+                        aria-describedby="login-instructions"
+                    >
+
+                        { !isSignInForm && 
                             <>
-                                New to Netflix? 
-                                <strong onClick={toggleSignInForm}
-                                    className="cursor-pointer font-bold mx-2.5 hover:underline"
-                                >
-                                    Sign Up now.
-                                </strong>
+                                <label htmlFor="name" className="sr-only">Full Name</label>
+                                <input ref={name} type="text" placeholder="Full Name" id="name" name="name" required
+                                    className="w-full p-3 sm:p-4 border-1 rounded-sm bg-gray-900 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-red-500"
+                                />
                             </>
-                        ) : (
+                        }
+
+                        <label htmlFor="email" className="sr-only">Email</label>
+                        <input ref={email} type="email" placeholder="Email" id="email" name="email" required
+                            className="w-full p-3 sm:p-4 border-1 rounded-sm bg-gray-900 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-red-500"
+                        />
+
+                        <label htmlFor="password" className="sr-only">Password</label>
+                        <input ref={password} type="password" placeholder="Password" id="password" name="password" required
+                            className="w-full p-3 sm:p-4 border-1 rounded-sm bg-gray-900 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-red-500"
+                        />
+
+                        { !isSignInForm && 
                             <>
-                                Already registered?
-                                <strong onClick={toggleSignInForm}
-                                    className="cursor-pointer font-bold mx-2.5 hover:underline"
-                                >
-                                    Sign In
-                                </strong>
+                                <label htmlFor="confirmPassword" className="sr-only">Confirm Password</label>
+                                <input ref={confirmPassword} type="password" placeholder="Confirm Password" id="confirmPassword" name="confirmPassword" required
+                                    className="w-full p-3 sm:p-4 border-1 rounded-sm bg-gray-900 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-red-500"
+                                />
                             </>
+                        }
+
+                        {errorMessage && (
+                            <p className="text-[#E50914] text-sm sm:text-base font-bold text-center break-words">
+                                {errorMessage}
+                            </p>
                         )}
-                    </p>
-                </form>
+
+                        <button aria-label="Sign In" onClick={handleButtonClick}
+                            className="w-full p-3 sm:p-4 font-bold rounded-sm cursor-pointer bg-[#E50914] hover:bg-red-700 duration-300 ease-in-out text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-red-300"
+                        >
+                            { isSignInForm ? "Sign In" : "Sign Up" }
+                        </button>
+
+                        <p className="cursor-pointer text-center text-sm sm:text-base">
+                            { isSignInForm ? (
+                                <>
+                                    New to Netflix? 
+                                    <strong onClick={toggleSignInForm}
+                                        className="cursor-pointer font-bold ml-1 hover:underline text-white"
+                                    >
+                                        Sign Up now.
+                                    </strong>
+                                </>
+                            ) : (
+                                <>
+                                    Already registered?
+                                    <strong onClick={toggleSignInForm}
+                                        className="cursor-pointer font-bold ml-1 hover:underline text-white"
+                                    >
+                                        Sign In
+                                    </strong>
+                                </>
+                            )}
+                        </p>
+                    </form>
+                </div>
             </div>
 
         </div>
