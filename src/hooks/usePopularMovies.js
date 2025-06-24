@@ -11,7 +11,6 @@ const usePopularMovies = () => {
     const getPopularMovies = async () => {
         const data = await fetch(`${URL}popular?language=en-US&page=1`, API_Options);
         const json = await data.json();
-        console.log(json);
 
         dispatch(addPopularMovies(json?.results));
     };
