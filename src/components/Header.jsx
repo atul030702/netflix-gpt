@@ -7,6 +7,7 @@ import { auth } from "../utils/firebase.js";
 import { dropDownImg } from "../utils/image.js";
 import { netflixLogoCdn } from "../utils/image.js";
 import { addUser, removeUser } from "../utils/userSlice.js";
+import { toggleGptSearchView } from "../utils/gptSlice.js";
 
 const Header = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -48,6 +49,10 @@ const Header = () => {
         setIsScrolled(window.scrollY > 10);
     }
 
+    const handleGptSearchClick = () => {
+        dispatch(toggleGptSearchView());
+    };
+
     const handleSignOut = () => {
         signOut(auth).catch((error) => {
             console.error(error?.message);
@@ -81,7 +86,21 @@ const Header = () => {
                  
 
             {user  && (
-                <div className="flex items-center">
+                <div className="flex items-center space-x-3 sm:space-x-4 md:space-x-5 lg:space-x-6">
+
+                    <button onClick={handleGptSearchClick}
+                        className="bg-red-600 hover:bg-red-700 text-white font-semibold rounded transition-all duration-200 cursor-pointer
+                            transform hover:scale-105 active:scale-95
+                            px-2 py-1 text-xs
+                            sm:px-3 sm:py-1.5 sm:text-sm
+                            md:px-4 md:py-2 md:text-base
+                            lg:px-5 lg:py-2.5
+                            xl:px-6 xl:py-3
+                        "
+                    >
+                        GPT Search
+                    </button>
+
                     <div onMouseEnter={handleMouseEnter}
                         onMouseLeave={handleMouseLeave}
                         className="relative" 
