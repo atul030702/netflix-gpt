@@ -4,10 +4,12 @@ import { useNavigate } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 
 import { auth } from "../utils/firebase.js";
-import { dropDownImg } from "../utils/image.js";
+import { dropDownImg, SUPPORTED_LANGUAGES } from "../utils/image.js";
 import { netflixLogoCdn } from "../utils/image.js";
 import { addUser, removeUser } from "../utils/userSlice.js";
 import { toggleGptSearchView } from "../utils/gptSlice.js";
+import { changeLanguage } from "../utils/configSlice.js";
+import lang from "../utils/languageConstants.js";
 
 const Header = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -15,8 +17,13 @@ const Header = () => {
     const dropdownRef = useRef(null);
 
     const navigate = useNavigate();
-    const user = useSelector((store) => store.user);
     const dispatch = useDispatch();
+    
+    //Destructuring the values from redux store (below)
+    const reduxStore = useSelector(store => store);
+    const { user, gpt, config } = reduxStore;
+    const showGptSearch = gpt?.showGptSearch;
+    const languageKey = config?.lang;
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -53,6 +60,10 @@ const Header = () => {
         dispatch(toggleGptSearchView());
     };
 
+    const handleLanguageChange = (e) => {
+        dispatch(changeLanguage(e.target.value));
+    };
+
     const handleSignOut = () => {
         signOut(auth).catch((error) => {
             console.error(error?.message);
@@ -83,77 +94,94 @@ const Header = () => {
                     role="Image" draggable="false" loading="lazy"
                 /> 
             </div>
-                 
 
-            {user  && (
-                <div className="flex items-center space-x-3 sm:space-x-4 md:space-x-5 lg:space-x-6">
 
-                    <button onClick={handleGptSearchClick}
-                        className="bg-red-600 hover:bg-red-700 text-white font-semibold rounded transition-all duration-200 cursor-pointer
-                            transform hover:scale-105 active:scale-95
-                            px-2 py-1 text-xs
-                            sm:px-3 sm:py-1.5 sm:text-sm
-                            md:px-4 md:py-2 md:text-base
-                            lg:px-5 lg:py-2.5
-                            xl:px-6 xl:py-3
-                        "
-                    >
-                        GPT Search
-                    </button>
+            <div className="flex">
+                <select onChange={handleLanguageChange}
+                    className="text-white mx-5 bg-white/25 font-bold border-2 border-red-600 p-2 cursor-pointer rounded outline-none"
+                >
+                    {SUPPORTED_LANGUAGES.map((language) => (
+                        <option className="text-black"
+                            key={language?.identifier}
+                            value={language?.identifier}
+                        >
+                            {language?.name}
+                        </option>
+                    ))}
+                </select>
 
-                    <div onMouseEnter={handleMouseEnter}
-                        onMouseLeave={handleMouseLeave}
-                        className="relative" 
-                        ref={dropdownRef}
-                    >
-                        <img onClick={() => setShowDropdown(!showDropdown)}
-                            className="rounded cursor-pointer transition-transform duration-200 hover:scale-110
-                                w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 xl:w-10 xl:h-10
-                            " 
-                            src={dropDownImg} 
-                            alt="Dropdown Icon" 
-                            draggable="false" 
-                            loading="lazy" 
-                            decoding="async"
-                        />
+                    
 
-                        {showDropdown && (
-                            <div className={`absolute bg-black text-white rounded shadow-lg flex flex-col transition-all duration-300 border border-gray-700
-                                top-8 right-0 p-1 min-w-32
-                                sm:top-9 sm:p-2 sm:min-w-36
-                                md:top-10 md:p-2 md:min-w-40
-                                lg:top-11 lg:p-3 lg:min-w-44
-                                xl:top-12 xl:min-w-48
-                            `}>
-                                <div className="border-b border-gray-600 pb-1 mb-1
-                                    sm:pb-2 sm:mb-2
-                                ">
-                                    <h2 className="whitespace-nowrap font-semibold text-gray-200
-                                        text-xs px-2 py-1
-                                        sm:text-sm sm:px-2 sm:py-1.5
-                                        md:text-base md:px-3 md:py-2
-                                        lg:px-3 lg:py-2
+                {user  && (
+                    <div className="flex items-center space-x-3 sm:space-x-4 md:space-x-5 lg:space-x-6">
+
+                        <button onClick={handleGptSearchClick}
+                            className="bg-red-600 hover:bg-red-700 text-white font-semibold rounded transition-all duration-300 cursor-pointer
+                                transform hover:scale-105 active:scale-95
+                                px-2 py-1 text-xs
+                                sm:px-3 sm:py-1.5 sm:text-sm
+                                md:px-4 md:py-2 md:text-base
+                                lg:px-5 lg:py-2.5
+                                xl:px-6 xl:py-3
+                            "
+                        >
+                            {showGptSearch ? lang[languageKey]?.homePage : lang[languageKey]?.gptSearch}
+                        </button>
+
+                        <div onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
+                            className="relative" 
+                            ref={dropdownRef}
+                        >
+                            <img onClick={() => setShowDropdown(!showDropdown)}
+                                className="rounded cursor-pointer transition-transform duration-200 hover:scale-110
+                                    w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 xl:w-10 xl:h-10
+                                " 
+                                src={dropDownImg} 
+                                alt="Dropdown Icon" 
+                                draggable="false" 
+                                loading="lazy" 
+                                decoding="async"
+                            />
+
+                            {showDropdown && (
+                                <div className={`absolute bg-black text-white rounded shadow-lg flex flex-col transition-all duration-300 border border-gray-700
+                                    top-8 right-0 p-1 min-w-32
+                                    sm:top-9 sm:p-2 sm:min-w-36
+                                    md:top-10 md:p-2 md:min-w-40
+                                    lg:top-11 lg:p-3 lg:min-w-44
+                                    xl:top-12 xl:min-w-48
+                                `}>
+                                    <div className="border-b border-gray-600 pb-1 mb-1
+                                        sm:pb-2 sm:mb-2
                                     ">
-                                        {user?.displayName}
-                                    </h2>
+                                        <h2 className="whitespace-nowrap font-semibold text-gray-200
+                                            text-xs px-2 py-1
+                                            sm:text-sm sm:px-2 sm:py-1.5
+                                            md:text-base md:px-3 md:py-2
+                                            lg:px-3 lg:py-2
+                                        ">
+                                            {user?.displayName}
+                                        </h2>
+                                    </div>
+                                    
+                                    <button onClick={handleSignOut}
+                                        className="text-left whitespace-nowrap hover:bg-gray-800 transition-colors duration-200 rounded cursor-pointer
+                                            text-xs px-2 py-1
+                                            sm:text-sm sm:px-2 sm:py-1.5
+                                            md:text-base md:px-3 md:py-2
+                                            lg:px-3 lg:py-2
+                                        "
+                                    >
+                                        {lang[languageKey]?.signOut}
+                                    </button>
                                 </div>
-                                
-                                <button onClick={handleSignOut}
-                                    className="text-left whitespace-nowrap hover:bg-gray-800 transition-colors duration-200 rounded cursor-pointer
-                                        text-xs px-2 py-1
-                                        sm:text-sm sm:px-2 sm:py-1.5
-                                        md:text-base md:px-3 md:py-2
-                                        lg:px-3 lg:py-2
-                                    "
-                                >
-                                    Sign Out
-                                </button>
-                            </div>
-                        )}
+                            )}
 
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
         </div>
 
     );

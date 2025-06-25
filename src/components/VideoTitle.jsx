@@ -1,7 +1,11 @@
+import { useSelector } from "react-redux";
+
 import playBtnLogo from "../assets/play-btn-logo.svg";
 import infoLogo from "../assets/info-logo.svg";
+import lang from "../utils/languageConstants";
 
 const VideoTitle = ({ title, overview }) => {
+    const languageKey = useSelector(store => store.config.lang);
 
     return (
         <div className="w-full h-full text-white font-sans absolute flex items-start justify-center flex-col bg-gradient-to-r from-black/70 via-black/40 to-transparent
@@ -43,7 +47,7 @@ const VideoTitle = ({ title, overview }) => {
                     <img className="mr-1 size-3 sm:size-4 sm:mr-1.5 md:size-5 md:mr-2 lg:size-6 xl:size-7" 
                         src={playBtnLogo} alt="Play Button Logo" loading="lazy" decoding="async" draggable="false" 
                     />
-                    Play
+                    {lang[languageKey]?.play}
                 </button>
 
                 <button className="inline-flex justify-center items-center font-semibold text-white bg-gray-600/70 rounded cursor-pointer hover:bg-gray-600/50 transition-all duration-200
@@ -56,7 +60,7 @@ const VideoTitle = ({ title, overview }) => {
                     <img className=" size-3 sm:size-4 md:size-5 lg:size-6 xl:size-7" 
                         src={infoLogo} alt="Info Logo" loading="lazy" decoding="async" draggable="false" 
                     />
-                    More Info
+                    {lang[languageKey]?.moreInfo}
                 </button>
             </div>
         </div>
