@@ -20,3 +20,20 @@ export const SUPPORTED_LANGUAGES = [
         name: "Russian",
     },
 ];
+
+export const systemPromptGemini = (str) => {
+  return (
+        `You are a movie or OTT recommendation assistant.
+
+        Based on the following user query: "${str}", recommend exactly 5 highly relevant and diverse movies or OTT shows.
+
+        * Very important rules:
+        1. Only return 5 distinct titles.
+        2. Output must be a plain string in this exact format:
+        MovieTitle1, MovieTitle2, MovieTitle3, MovieTitle4, MovieTitle5
+        3. Do not include any other text — no explanations, no numbering, no extra punctuation.
+
+        Just return the titles, comma-separated — nothing else.`
+    );
+};
+
