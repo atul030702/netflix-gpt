@@ -29,10 +29,10 @@ const GptSearchBar = () => {
 
         //clear markdown format if present in ai response
         const parsedMovies = parseGeminiMovies(response?.text);
-        console.log(parsedMovies);
+
         const promiseArray = parsedMovies?.map(movie => searchMovieTMDB(movie));
         const tmdbResults = await Promise.all(promiseArray);
-        console.log(tmdbResults);
+
         //updating the gpt slice with gpt movie recommendation after fetching it from tmdb
         dispatch(addGptMovieResult({ movieNames: parsedMovies, movieResults: tmdbResults }));
 

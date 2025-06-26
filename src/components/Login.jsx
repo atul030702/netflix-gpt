@@ -1,17 +1,19 @@
 import { useState, useRef } from "react";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import Header from "./Header.jsx";
 import { loginPageBgImg } from "../utils/image.js";
 import { checkValidData } from "../utils/validate.js";
 import { auth } from "../utils/firebase.js";
 import { addUser } from "../utils/userSlice.js";
+import lang from "../utils/languageConstants.js";
 
 const Login = () => {
     const [isSignInForm, setIsSignInForm] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
     const dispatch = useDispatch();
+    const languageKey = useSelector(store => store.config?.lang);
 
     const name = useRef(null);
     const email = useRef(null);
@@ -106,7 +108,7 @@ const Login = () => {
                     className="w-full max-w-md mx-auto p-6 sm:p-8 md:p-10 rounded-sm bg-black/75 flex flex-col"
                 >
                     <h1 className="text-white font-bold text-2xl sm:text-3xl my-3 sm:my-5 text-center sm:text-left" role="header">
-                        { isSignInForm ? "Sign In" : "Sign Up" }
+                        { isSignInForm ? lang[languageKey].signIn : lang[languageKey].signUp }
                     </h1>
 
                     <form onSubmit={(e) => e.preventDefault()}
@@ -117,26 +119,26 @@ const Login = () => {
                         { !isSignInForm && 
                             <>
                                 <label htmlFor="name" className="sr-only">Full Name</label>
-                                <input ref={name} type="text" placeholder="Full Name" id="name" name="name" required
+                                <input ref={name} type="text" placeholder={lang[languageKey].fullName} id="name" name="name" required
                                     className="w-full p-3 sm:p-4 border-1 rounded-sm bg-gray-900 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-red-500"
                                 />
                             </>
                         }
 
                         <label htmlFor="email" className="sr-only">Email</label>
-                        <input ref={email} type="email" placeholder="Email" id="email" name="email" required
+                        <input ref={email} type="email" placeholder={lang[languageKey].email} id="email" name="email" required
                             className="w-full p-3 sm:p-4 border-1 rounded-sm bg-gray-900 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-red-500"
                         />
 
                         <label htmlFor="password" className="sr-only">Password</label>
-                        <input ref={password} type="password" placeholder="Password" id="password" name="password" required
+                        <input ref={password} type="password" placeholder={lang[languageKey].password} id="password" name="password" required
                             className="w-full p-3 sm:p-4 border-1 rounded-sm bg-gray-900 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-red-500"
                         />
 
                         { !isSignInForm && 
                             <>
                                 <label htmlFor="confirmPassword" className="sr-only">Confirm Password</label>
-                                <input ref={confirmPassword} type="password" placeholder="Confirm Password" id="confirmPassword" name="confirmPassword" required
+                                <input ref={confirmPassword} type="password" placeholder={`${lang[languageKey].confirm} ${lang[languageKey].password}`} id="confirmPassword" name="confirmPassword" required
                                     className="w-full p-3 sm:p-4 border-1 rounded-sm bg-gray-900 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-red-500"
                                 />
                             </>
@@ -151,26 +153,26 @@ const Login = () => {
                         <button aria-label="Sign In" onClick={handleButtonClick}
                             className="w-full p-3 sm:p-4 font-bold rounded-sm cursor-pointer bg-[#E50914] hover:bg-red-700 duration-300 ease-in-out text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-red-300"
                         >
-                            { isSignInForm ? "Sign In" : "Sign Up" }
+                            { isSignInForm ? lang[languageKey].signIn : lang[languageKey].signUp }
                         </button>
 
                         <p className="cursor-pointer text-center text-sm sm:text-base">
                             { isSignInForm ? (
                                 <>
-                                    New to Netflix? 
+                                    {`${lang[languageKey].newToNetflix}?`} 
                                     <strong onClick={toggleSignInForm}
                                         className="cursor-pointer font-bold ml-1 hover:underline text-white"
                                     >
-                                        Sign Up now.
+                                        {`${lang[languageKey].signUp} ${lang[languageKey].now}`}
                                     </strong>
                                 </>
                             ) : (
                                 <>
-                                    Already registered?
+                                    {`${lang[languageKey].alreadyRegistered}?`}
                                     <strong onClick={toggleSignInForm}
                                         className="cursor-pointer font-bold ml-1 hover:underline text-white"
                                     >
-                                        Sign In
+                                        {lang[languageKey].signIn}
                                     </strong>
                                 </>
                             )}

@@ -4,8 +4,8 @@ import MovieList from "./MovieList.jsx";
 import lang from "../utils/languageConstants.js";
 
 const SecondaryContainer = () => {
-    const { movies, config } = useSelector(store => store);
-    const languageKey = config?.lang;
+    const movies = useSelector(store => store.movies);
+    const languageKey = useSelector(store => store.config?.lang);
 
     return (
         movies.nowPlayingMovies && 

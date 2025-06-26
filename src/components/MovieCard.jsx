@@ -8,12 +8,14 @@ const MovieCard = ({posterPath}) => {
             w-32 mr-2
             sm:w-36 sm:mr-2.5
             md:w-40 md:mr-3
-            lg:w-44 lg:mr-3.5
+            lg:w-44 lg:mr-3
             xl:w-48 xl:mr-4
             2xl:w-52 2xl:mr-4
         ">
             <img 
-                className="rounded w-full h-auto object-cover shadow-md hover:shadow-lg hover:shadow-black/30 transition-shadow duration-300"
+                className="rounded w-full object-cover shadow-md hover:shadow-lg hover:shadow-black/30 transition-shadow duration-300
+                    h-48 sm:h-54 md:h-60 lg:h-66 xl:h-72 2xl:h-78
+                "
                 src={posterPath ? `${posterCdnUrl}${posterPath}` : brokenImage} 
                 alt="Movie Poster" 
                 draggable="false"

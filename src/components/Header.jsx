@@ -20,8 +20,9 @@ const Header = () => {
     const dispatch = useDispatch();
     
     //Destructuring the values from redux store (below)
-    const reduxStore = useSelector(store => store);
-    const { user, gpt, config } = reduxStore;
+    const user = useSelector(store => store.user);
+    const gpt = useSelector(store => store.gpt);
+    const config = useSelector(store => store.config);
     const showGptSearch = gpt?.showGptSearch;
     const languageKey = config?.lang;
 
@@ -98,7 +99,9 @@ const Header = () => {
 
             <div className="flex">
                 <select onChange={handleLanguageChange}
-                    className="text-white mx-5 bg-white/25 font-bold border-2 border-red-600 p-2 cursor-pointer rounded outline-none"
+                    className="text-white mx-5 bg-white/25 font-semibold border-2 border-red-600 p-2 cursor-pointer rounded outline-none
+                        px-2 py-1 text-xs sm:px-3 sm:py-1.5 sm:text-sm md:px-4 md:py-2 md:text-base lg:px-5 lg:py-2.5 xl:px-6 xl:py-3
+                    "
                 >
                     {SUPPORTED_LANGUAGES.map((language) => (
                         <option className="text-black"
