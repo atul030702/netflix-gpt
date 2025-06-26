@@ -5,7 +5,7 @@ import leftScrollIcon from "../assets/arrow_back.svg";
 import rightScrollIcon from "../assets/arrow_forward.svg";
 
 const MovieList = ({title, movies}) => {
-    const scrollRef = useRef();
+    const scrollRef = useRef(null);
     const [showLeft, setShowLeft] = useState(false);
     const [showRight, setShowRight] = useState(true);
 

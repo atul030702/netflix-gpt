@@ -1,17 +1,22 @@
+import { useSelector } from "react-redux";
 
+import MovieList from "./MovieList.jsx";
 
 const GptMovieSuggestions = () => {
+    const { movieNames, movieResults } = useSelector(store => store.gpt);
+    if(!movieNames || !movieResults) return "";
+    console.log(movieNames);
+
     return (
-        <div className="w-full px-4 py-8 mt-8 sm:mt-16">
-            <div className="max-w-6xl mx-auto">
-                <div className="bg-black bg-opacity-70 rounded-lg p-6 text-center">
-                    <h2 className="text-white text-xl sm:text-2xl font-semibold mb-4">
-                        Movie Suggestions
-                    </h2>
-                    <p className="text-gray-300 text-sm sm:text-base">
-                        Your personalized movie recommendations will appear here
-                    </p>
-                </div>
+        <div className="w-full absolute px-4 py-8 top-[25%] sm:top-[15%] md:top-[25%] z-10">
+            <div className="bg-black/75 rounded-lg p-6 text-center text-white">
+                {movieNames.map((movieObj, index) => (
+                    <div key={index}
+                        className="w-full flex flex-row justify-start items-center overflow-x-auto"
+                    >
+                        <MovieList title={movieObj?.name} movies={movieResults[index]} />
+                    </div>
+                ))}
             </div>
         </div>
     );

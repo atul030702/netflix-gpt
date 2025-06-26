@@ -1,4 +1,5 @@
 import { posterCdnUrl } from "../utils/image";
+import brokenImage from "../assets/broken_image.png";
 
 const MovieCard = ({posterPath}) => {
 
@@ -13,7 +14,7 @@ const MovieCard = ({posterPath}) => {
         ">
             <img 
                 className="rounded w-full h-auto object-cover shadow-md hover:shadow-lg hover:shadow-black/30 transition-shadow duration-300"
-                src={`${posterCdnUrl}${posterPath}`} 
+                src={posterPath ? `${posterCdnUrl}${posterPath}` : brokenImage} 
                 alt="Movie Poster" 
                 draggable="false"
                 decoding="async"

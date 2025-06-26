@@ -1,57 +1,59 @@
 import { useRef } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { GoogleGenAI } from "@google/genai";
 
 import lang from "../utils/languageConstants.js";
+import { addGptMovieResult } from "../utils/gptSlice.js";
 import { systemPromptGemini } from "../utils/image.js";
+import { parseGeminiMovies, searchMovieTMDB } from "../utils/gptMovieUtils.js";
 
 const GptSearchBar = () => {
     const searchText = useRef(null);
+    const dispatch = useDispatch();
     const languageKey = useSelector(store => store.config.lang);
 
     const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-
     const ai = new GoogleGenAI({apiKey: API_KEY});
 
     const handleGptSearchClick = async () => {
         const inputValue = searchText?.current?.value;
-
-
         const systemPrompt = systemPromptGemini(inputValue);
 
         //Make an api call to gemini ai and get movie result
         const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash",
+            model: "gemini-2.0-flash",
             contents: systemPrompt,
         });
 
-        if(!response.text) {
-            //TODO: Write error handling
-        }
+        if(!response.text) return;
 
-        const geminiMovies = response.text;
-        console.log(geminiMovies, typeof geminiMovies);
-        const moviesArray = geminiMovies.split(",");
-        console.log(moviesArray);
+        //clear markdown format if present in ai response
+        const parsedMovies = parseGeminiMovies(response?.text);
+        console.log(parsedMovies);
+        const promiseArray = parsedMovies?.map(movie => searchMovieTMDB(movie));
+        const tmdbResults = await Promise.all(promiseArray);
+        console.log(tmdbResults);
+        //updating the gpt slice with gpt movie recommendation after fetching it from tmdb
+        dispatch(addGptMovieResult({ movieNames: parsedMovies, movieResults: tmdbResults }));
 
         //clear the input box
         searchText.current.value = "";
     };
 
     return (
-        <div className="w-full absolute top-[20%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 px-4">
-            <div className="bg-black bg-opacity-80 rounded-lg p-2 max-w-4xl mx-auto">
+        <div className="w-full absolute top-[20%] sm:top-[20%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 px-3 sm:px-4 md:px-6">
+            <div className="bg-black bg-opacity-80 border border-gray-800 rounded-lg p-4 sm:p-6 md:p-8 max-w-xs sm:max-w-2xl md:max-w-4xl lg:max-w-5xl mx-auto shadow-2xl">
                 <form onSubmit={(e) => e.preventDefault()}
-                    className="w-full flex flex-col sm:flex-row gap-4 items-center justify-center"
+                    className="w-full flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-center"
                 >
                     <input ref={searchText}
-                        className="w-full sm:flex-1 p-2 text-black font-semibold text-base sm:text-lg border-2 border-red-600 rounded bg-white outline-none focus:border-red-700 transition-colors duration-300"
+                        className="w-full sm:flex-1 p-2 sm:p-3 text-black font-medium text-sm sm:text-base md:text-lg border-2 border-red-600 rounded-lg bg-white outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition-all duration-300 placeholder:text-gray-500"
                         type="text" 
                         placeholder={lang[languageKey].gptSearchPlaceholder} 
                     />
                     <button 
                         onClick={handleGptSearchClick}
-                        className="w-full sm:w-auto py-3 px-6 text-white font-semibold rounded bg-red-600 transition-all duration-300 cursor-pointer hover:bg-red-700 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                        className="w-full sm:w-auto py-3 sm:py-4 px-6 sm:px-8 md:px-10 text-white font-semibold text-sm sm:text-base rounded-lg bg-red-600 transition-all duration-300 cursor-pointer hover:bg-red-700 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {lang[languageKey].search}
                     </button>
