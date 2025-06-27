@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { URL, API_Options } from "../utils/apiOption.js";
 import { addTopRatedMovies } from "../utils/movieSlice.js";
+//import { fetchFromTMDB } from "../utils/tmdbClient.js";
 
 const useTopRatedMovies = () => {
     const dispatch = useDispatch();
@@ -13,6 +14,15 @@ const useTopRatedMovies = () => {
 
         dispatch(addTopRatedMovies(json?.results));
     };
+
+    /*const getTopRatedMovies = async () => {
+        try {
+            const json = await fetchFromTMDB("top_rated");
+            dispatch(addTopRatedMovies(json?.results));
+        } catch (error) {
+            console.error("Error loading top rated movies:", error.message);
+        }
+    };*/
 
     useEffect(() => {
         getTopRatedMovies();

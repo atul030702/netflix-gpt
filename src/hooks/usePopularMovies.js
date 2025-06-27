@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 import { URL, API_Options } from "../utils/apiOption.js";
 import { addPopularMovies } from "../utils/movieSlice.js";
-
+//import { fetchFromTMDB } from "../utils/tmdbClient.js";
 
 const usePopularMovies = () => {
     const dispatch = useDispatch();
@@ -14,6 +14,15 @@ const usePopularMovies = () => {
 
         dispatch(addPopularMovies(json?.results));
     };
+
+    /*const getPopularMovies = async () => {
+        try {
+            const json = await fetchFromTMDB("popular");
+            dispatch(addPopularMovies(json?.results || []));
+        } catch (error) {
+            console.error("Error loading popular movies", error.message);
+        } 
+    };*/
 
     useEffect(() => {
         getPopularMovies();

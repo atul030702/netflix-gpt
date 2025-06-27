@@ -33,5 +33,18 @@ export const searchMovieTMDB = async ({ name, year }) => {
         console.error("TMDB API error:", error);
         return [];
     }
-};
+}; 
+
+/*export const searchMovieTMDB = async ({ name, year }) => {
+    try {
+        const query = new URLSearchParams({ name, ...(year && { year }) }).toString();
+
+        const response = await fetch(`/api/search?${query}`);
+        const data = await response.json();
+        return data?.results;
+    } catch (error) {
+        console.error("API error from backend /api/search:", error);
+        return [];
+    }
+}; */
 
