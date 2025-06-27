@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { GoogleGenAI } from "@google/genai";
 
 import lang from "../utils/languageConstants.js";
-import { addGptMovieResult } from "../utils/gptSlice.js";
+import { addGptMovieResult, setGptLoading } from "../utils/gptSlice.js";
 import { systemPromptGemini } from "../utils/image.js";
 import { parseGeminiMovies, searchMovieTMDB } from "../utils/gptMovieUtils.js";
 
@@ -11,33 +11,44 @@ const GptSearchBar = () => {
     const searchText = useRef(null);
     const dispatch = useDispatch();
     const languageKey = useSelector(store => store.config.lang);
+    const isLoading = useSelector(store => store.gpt?.isLoading);
 
     const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
     const ai = new GoogleGenAI({apiKey: API_KEY});
 
     const handleGptSearchClick = async () => {
         const inputValue = searchText?.current?.value;
-        const systemPrompt = systemPromptGemini(inputValue);
+        if(!inputValue.trim()) return;
 
-        //Make an api call to gemini ai and get movie result
-        const response = await ai.models.generateContent({
-            model: "gemini-2.0-flash",
-            contents: systemPrompt,
-        });
+        try {
+            dispatch(setGptLoading(true));
 
-        if(!response.text) return;
+            const systemPrompt = systemPromptGemini(inputValue);
 
-        //clear markdown format if present in ai response
-        const parsedMovies = parseGeminiMovies(response?.text);
+            //Make an api call to gemini ai and get movie result
+            const response = await ai.models.generateContent({
+                model: "gemini-2.0-flash",
+                contents: systemPrompt,
+            });
 
-        const promiseArray = parsedMovies?.map(movie => searchMovieTMDB(movie));
-        const tmdbResults = await Promise.all(promiseArray);
+            if(!response.text) return;
 
-        //updating the gpt slice with gpt movie recommendation after fetching it from tmdb
-        dispatch(addGptMovieResult({ movieNames: parsedMovies, movieResults: tmdbResults }));
+            //clear markdown format if present in ai response
+            const parsedMovies = parseGeminiMovies(response?.text);
 
-        //clear the input box
-        searchText.current.value = "";
+            const promiseArray = parsedMovies?.map(movie => searchMovieTMDB(movie));
+            const tmdbResults = await Promise.all(promiseArray);
+
+            //updating the gpt slice with gpt movie recommendation after fetching it from tmdb
+            dispatch(addGptMovieResult({ movieNames: parsedMovies, movieResults: tmdbResults }));
+
+            //clear the input box
+            searchText.current.value = "";
+        } catch (error) {
+            console.error("Error fetching GPT suggestions:", error);
+        } finally {
+            dispatch(setGptLoading(false));
+        }
     };
 
     return (
@@ -50,12 +61,14 @@ const GptSearchBar = () => {
                         className="w-full sm:flex-1 p-2 sm:p-3 text-black font-medium text-sm sm:text-base md:text-lg border-2 border-red-600 rounded-lg bg-white outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition-all duration-300 placeholder:text-gray-500"
                         type="text" 
                         placeholder={lang[languageKey].gptSearchPlaceholder} 
+                        disabled={isLoading}
                     />
                     <button 
                         onClick={handleGptSearchClick}
+                        disabled={isLoading}
                         className="w-full sm:w-auto py-3 sm:py-4 px-6 sm:px-8 md:px-10 text-white font-semibold text-sm sm:text-base rounded-lg bg-red-600 transition-all duration-300 cursor-pointer hover:bg-red-700 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        {lang[languageKey].search}
+                        { isLoading ? "Searching..." : lang[languageKey].search }
                     </button>
                 </form>
             </div>
