@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-//import { URL, API_Options } from "../utils/apiOption.js";
 import { addNowPlayingMovies } from "../utils/movieSlice.js";
 import { fetchFromTMDB } from "../utils/tmdbClient.js";
 
