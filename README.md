@@ -60,7 +60,6 @@ src/
 ├── App.jsx #Root component
 └── index.css #CSS file
 
-
 ---
 
 ## 🔐 Secure Routes
@@ -72,6 +71,7 @@ Implemented private routing for `/browse` using React Router DOM. Non-authentica
 ## 🧪 Form Validation
 
 Client-side validation using **Regex** for:
+
 - ✅ Valid email format
 - ✅ Secure password structure
 - ✅ Non-empty name input
@@ -81,6 +81,7 @@ Client-side validation using **Regex** for:
 ## 🌍 Internationalization
 
 Built-in support for:
+
 - 🇺🇸 English
 - 🇮🇳 Hindi
 - 🇷🇺 Russian
@@ -92,6 +93,7 @@ Planned: Spanish, French, and more via i18n implementation.
 ## 🧠 AI-Powered Suggestions
 
 Gemini AI suggests movie recommendations based on:
+
 - User input based search
 
 ---
