@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-//import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI } from "@google/genai";
 
 import lang from "../utils/languageConstants.js";
 import { addGptMovieResult, setGptLoading } from "../utils/gptSlice.js";
@@ -13,8 +13,8 @@ const GptSearchBar = () => {
     const languageKey = useSelector(store => store.config.lang);
     const isLoading = useSelector(store => store.gpt?.isLoading);
 
-    //const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-    //const ai = new GoogleGenAI({apiKey: API_KEY});
+    const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+    const ai = new GoogleGenAI({apiKey: API_KEY});
 
     const handleGptSearchClick = async () => {
         const inputValue = searchText?.current?.value;
@@ -26,23 +26,15 @@ const GptSearchBar = () => {
             const systemPrompt = systemPromptGemini(inputValue);
 
             //Make an api call to gemini ai and get movie result
-            /*const response = await ai.models.generateContent({
+            const response = await ai.models.generateContent({
                 model: "gemini-2.0-flash",
                 contents: systemPrompt,
-            });*/
-            const response = await fetch("/api/gemini", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ prompt: systemPrompt })
             });
 
-            const data = await response.json();
-            if(!data.result) return;
+            if(!response.text) return;
 
             //clear markdown format if present in ai response
-            const parsedMovies = parseGeminiMovies(data?.result);
+            const parsedMovies = parseGeminiMovies(response?.text);
 
             const promiseArray = parsedMovies?.map(movie => searchMovieTMDB(movie));
             const tmdbResults = await Promise.all(promiseArray);
