@@ -18,7 +18,7 @@ export default async function handler(req, res) {
         if(!response.ok) throw new Error("TMDB request failed");
 
         const data = await response.json();
-        res.status(200).json(data.results || []);
+        res.status(200).json({ results: data.results || [] });
         
     } catch (error) {
         console.error("TMDB search API error", error);

@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-//import { GoogleGenAI } from "@google/genai";
 
 import lang from "../utils/languageConstants.js";
 import { addGptMovieResult, setGptLoading } from "../utils/gptSlice.js";
@@ -13,9 +12,6 @@ const GptSearchBar = () => {
     const languageKey = useSelector(store => store.config.lang);
     const isLoading = useSelector(store => store.gpt?.isLoading);
 
-    /*const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-    const ai = new GoogleGenAI({apiKey: API_KEY});*/
-
     const handleGptSearchClick = async () => {
         const inputValue = searchText?.current?.value;
         if(!inputValue.trim()) return;
@@ -26,12 +22,6 @@ const GptSearchBar = () => {
             const systemPrompt = systemPromptGemini(inputValue);
 
             //Make an api call to gemini ai and get movie result
-            /*const response = await ai.models.generateContent({
-                model: "gemini-2.0-flash",
-                contents: systemPrompt,
-            });
-
-            if(!response.text) return;*/
             const response = await fetch("/api/gemini", {
                 method: "POST",
                 headers: {
