@@ -1,4 +1,4 @@
-import { searchMoviesTmdbUrl, API_Options } from "./apiOption.js";
+//import { searchMoviesTmdbUrl, API_Options } from "./apiOption.js";
 
 const cleanGeminiJson = (aiText) => {
     return aiText.trim()
@@ -19,7 +19,7 @@ export const parseGeminiMovies = (responseText) => {
     }
 };
 
-export const searchMovieTMDB = async ({ name, year }) => {
+/*export const searchMovieTMDB = async ({ name, year }) => {
     const query = encodeURIComponent(name);
     
     try {
@@ -33,9 +33,9 @@ export const searchMovieTMDB = async ({ name, year }) => {
         console.error("TMDB API error:", error);
         return [];
     }
-}; 
+}; */
 
-/*export const searchMovieTMDB = async ({ name, year }) => {
+export const searchMovieTMDB = async ({ name, year }) => {
     try {
         const query = new URLSearchParams({ name, ...(year && { year }) }).toString();
 
@@ -46,5 +46,5 @@ export const searchMovieTMDB = async ({ name, year }) => {
         console.error("API error from backend /api/search:", error);
         return [];
     }
-}; */
+}; 
 
