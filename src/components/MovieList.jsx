@@ -18,7 +18,6 @@ const MovieList = ({title, movies}) => {
     };
 
     const scrollLeft = () => {
-        //scrollRef.current.scrollBy({ left: -300, behavior: "smooth" });
         const scrollDistance = window.innerWidth < 640 ? 200 : 
                               window.innerWidth < 768 ? 250 : 
                               window.innerWidth < 1024 ? 300 : 350;
@@ -26,7 +25,6 @@ const MovieList = ({title, movies}) => {
     };
 
     const scrollRight = () => {
-        //scrollRef.current.scrollBy({ left: 300, behavior: "smooth" });
         const scrollDistance = window.innerWidth < 640 ? 200 : 
                               window.innerWidth < 768 ? 250 : 
                               window.innerWidth < 1024 ? 300 : 350;

@@ -28,7 +28,7 @@ const GptSearchBar = () => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({ prompt: systemPrompt })
-            });
+            }); 
 
             const data = await response.json();
             if(!data.result) return;
