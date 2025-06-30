@@ -1,10 +1,11 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { addTrailerVideo } from "../utils/movieSlice.js";
 
 const useMovieTrailer = (movieId) => {
     const dispatch = useDispatch();
+    const trailerVideo = useSelector(store => store.movies.trailerVideo)
 
     useEffect(() => {
         if(!movieId) return;
@@ -23,9 +24,9 @@ const useMovieTrailer = (movieId) => {
             }
         };
 
-        getMovieVideo();
+        !trailerVideo && getMovieVideo(); //fetch trailer video only when it is null
 
-    }, [ movieId ]);
+    }, [movieId, dispatch, trailerVideo]);
 };
 
 export default useMovieTrailer;
